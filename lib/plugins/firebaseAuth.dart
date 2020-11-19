@@ -75,7 +75,9 @@ Future signInWithEmailAndPassword(var email, var password) async {
         userCredential.user.uid,
         userCredential.user.displayName,
         userCredential.user.email,
-        userCredential.user.photoURL,
+        userCredential.user.photoURL != null
+            ? userCredential.user.photoURL
+            : "https://i.imgur.com/2lXx3B3.png",
         userCredential.user.phoneNumber,
         'default');
 

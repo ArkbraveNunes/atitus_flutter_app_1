@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
                         dynamic result = await signInWithEmailAndPassword(
                             emailTxt, senhaTxt);
                         if (result == true)
-                          Navigator.popAndPushNamed(context, '/first');
+                          Navigator.popAndPushNamed(context, '/home');
                       },
                       child: Text(
                         "Entrar",

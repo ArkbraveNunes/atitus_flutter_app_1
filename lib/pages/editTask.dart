@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/user.dart';
 
-class NewTask extends StatefulWidget {
+class EditTask extends StatefulWidget {
+  EditTask({this.title, this.duedate, this.note, this.index});
+  String title;
+  String note;
+  DateTime duedate;
+  final index;
   @override
-  _NewTaskState createState() => _NewTaskState();
+  _EditTaskState createState() => _EditTaskState();
 }
 
-class _NewTaskState extends State<NewTask> {
-  DateTime _dueDate = new DateTime.now();
+class _EditTaskState extends State<EditTask> {
+  TextEditingController controllerTitle;
+  TextEditingController controllerNote;
+  DateTime _dueDate;
   String _dateText = "";
-  String newTask = "";
-  String note = "";
+  String newTask;
+  String note;
+
+  void _editTask() {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
+      DocumentSnapshot documentSnapshot = await transaction.get(widget.index);
+      await transaction.update(documentSnapshot.reference,
+          {"title": newTask, "note": note, "duedate": _dueDate});
+    });
+    Navigator.pop(context);
+  }
+
+  // _updateTask
 
   Future _selectDueDate(BuildContext context) async {
     final picked = await showDatePicker(
@@ -28,24 +45,15 @@ class _NewTaskState extends State<NewTask> {
     }
   }
 
-  void _addData() {
-    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference =
-          FirebaseFirestore.instance.collection('task');
-      await reference.add({
-        "email": userModel.email,
-        "title": newTask,
-        "duedate": _dueDate,
-        "note": note
-      });
-    });
-    Navigator.pop(context);
-  }
-
   @override
   void initState() {
     super.initState();
+    _dueDate = widget.duedate;
     _dateText = "${_dueDate.day}/${_dueDate.month}/${_dueDate.year}";
+    newTask = widget.title;
+    note = widget.note;
+    controllerTitle = new TextEditingController(text: widget.title);
+    controllerNote = new TextEditingController(text: widget.note);
   }
 
   @override
@@ -72,7 +80,7 @@ class _NewTaskState extends State<NewTask> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Text("Adiconar Tarefa",
+                  child: Text("Editar Tarefa",
                       style: new TextStyle(fontSize: 24, color: Colors.white)),
                 ),
                 Icon(
@@ -86,6 +94,7 @@ class _NewTaskState extends State<NewTask> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: controllerTitle,
               onChanged: (String str) {
                 setState(() {
                   newTask = str;
@@ -93,7 +102,7 @@ class _NewTaskState extends State<NewTask> {
               },
               decoration: new InputDecoration(
                   icon: Icon(Icons.dashboard),
-                  hintText: "Título da Nova Tarefa",
+                  hintText: "Título da Tarefa",
                   border: InputBorder.none),
               style: new TextStyle(fontSize: 22, color: Colors.black),
             ),
@@ -125,6 +134,7 @@ class _NewTaskState extends State<NewTask> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: controllerNote,
               onChanged: (String str) {
                 setState(() {
                   note = str;
@@ -148,7 +158,7 @@ class _NewTaskState extends State<NewTask> {
                       size: 40,
                     ),
                     onPressed: () {
-                      _addData();
+                      _editTask();
                     }),
                 IconButton(
                     icon: Icon(

@@ -3,6 +3,7 @@ import './pages/login.dart';
 import './pages/register.dart';
 import './pages/home.dart';
 import './pages/newTask.dart';
+import './pages/editTask.dart';
 import './database/firebase.dart';
 
 void main() async {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           '/register': (context) => Register(),
           '/home': (context) => Home(),
           '/task/new': (context) => NewTask(),
+          '/task/edit': (context) => EditTask(),
         });
   }
 }
