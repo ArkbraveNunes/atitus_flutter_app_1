@@ -4,10 +4,8 @@ class UserModel {
   final String email;
   final String photo;
   final String phoneNumber;
-  final String typeLogin;
 
-  UserModel(this.uid, this.name, this.email, this.photo, this.phoneNumber,
-      this.typeLogin);
+  UserModel(this.uid, this.name, this.email, this.photo, this.phoneNumber);
 }
 
 UserModel userModel;
