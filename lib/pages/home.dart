@@ -82,13 +82,6 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.black,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      // bottomNavigationBar: new BottomAppBar(
-      //   elevation: 20,
-      //   color: Colors.black,
-      //   child: ButtonBar(
-      //     children: <Widget>[],
-      //   ),
-      // ),
       body: new Stack(
         children: <Widget>[
           Padding(

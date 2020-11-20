@@ -23,13 +23,8 @@ Future signInWithGoogle() async {
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
     assert(user.uid == currentUser.uid);
-    userModel = UserModel(
-        currentUser.uid,
-        currentUser.displayName,
-        currentUser.email,
-        currentUser.photoURL,
-        currentUser.phoneNumber,
-        'google');
+    userModel = UserModel(currentUser.uid, currentUser.displayName,
+        currentUser.email, currentUser.photoURL, currentUser.phoneNumber);
     return true;
   }
   return false;
@@ -37,56 +32,4 @@ Future signInWithGoogle() async {
 
 Future signOutGoogle() async {
   await googleSignIn.signOut();
-}
-
-Future createUserWithEmailAndPassword(var email, var password) async {
-  try {
-    userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-
-    userModel = UserModel(
-        userCredential.user.uid,
-        userCredential.user.displayName,
-        userCredential.user.email,
-        userCredential.user.photoURL,
-        userCredential.user.phoneNumber,
-        'default');
-
-    return true;
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'weak-password') {
-      print('weak-password');
-      return 'Senha muito fraca, digite uma senha mais forte';
-    } else if (e.code == 'email-already-in-use') {
-      print('email-already-in-use');
-      return 'Este e-mail já está em uso';
-    }
-  } catch (e) {
-    return 'Erro ao cadastrar usuario';
-  }
-}
-
-Future signInWithEmailAndPassword(var email, var password) async {
-  try {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-
-    userModel = UserModel(
-        userCredential.user.uid,
-        userCredential.user.displayName,
-        userCredential.user.email,
-        userCredential.user.photoURL != null
-            ? userCredential.user.photoURL
-            : "https://i.imgur.com/2lXx3B3.png",
-        userCredential.user.phoneNumber,
-        'default');
-
-    return true;
-  } on FirebaseAuthException catch (e) {
-    return false;
-  }
-}
-
-Future signOut() async {
-  await FirebaseAuth.instance.signOut();
 }

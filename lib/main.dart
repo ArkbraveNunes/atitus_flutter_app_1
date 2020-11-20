@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './pages/login.dart';
-import './pages/register.dart';
 import './pages/home.dart';
 import './pages/newTask.dart';
 import './pages/editTask.dart';
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'AnnotApp',
+        title: 'RememberMe',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.black,
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
         initialRoute: '/login',
         routes: {
           '/login': (context) => Login(),
-          '/register': (context) => Register(),
           '/home': (context) => Home(),
           '/task/new': (context) => NewTask(),
           '/task/edit': (context) => EditTask(),
